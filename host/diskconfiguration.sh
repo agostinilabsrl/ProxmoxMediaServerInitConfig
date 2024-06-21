@@ -1,17 +1,27 @@
 #!/bin/bash
 
-# Prompt for user input
-read -p "Enter the VM disk path (e.g., /dev/mapper/pve-vm--888--disk--0): " vm_disk_path
-read -p "Enter the container ID for Sonarr: " sonarr_id
-read -p "Enter the container ID for Radarr: " radarr_id
-read -p "Enter the container ID for Plesk: " plesk_id
-read -p "Enter the container ID for QbitTorrent: " qbit_id
+# Set default values
+default_vm_disk_path="/dev/mapper/pve-vm--888--disk--0"
+default_sonarr_id="101"
+default_radarr_id="102"
+default_plex_id="103"
+default_qbit_id="104"
 
-# Update and upgrade the system
-apt-get update && apt-get upgrade -y
+# Prompt for user input with default values
+read -p "Enter the VM disk path (default: $default_vm_disk_path): " vm_disk_path
+vm_disk_path=${vm_disk_path:-$default_vm_disk_path}
 
-# Install essential packages
-apt-get install -y curl git vim
+read -p "Enter the container ID for Sonarr (default: $default_sonarr_id): " sonarr_id
+sonarr_id=${sonarr_id:-$default_sonarr_id}
+
+read -p "Enter the container ID for Radarr (default: $default_radarr_id): " radarr_id
+radarr_id=${radarr_id:-$default_radarr_id}
+
+read -p "Enter the container ID for Plex (default: $default_plex_id): " plex_id 
+plex_id=${plex_id:-$default_plex_id}
+
+read -p "Enter the container ID for QbitTorrent (default: $default_qbit_id): " qbit_id
+qbit_id=${qbit_id:-$default_qbit_id}
 
 # Additional configuration steps can be added below
 
@@ -33,9 +43,6 @@ chmod -R 777 /mnt/sharedVMDrive
 # Add the mount points to the containers using the provided IDs
 pct set $sonarr_id -mp0 /mnt/sharedVMDrive/downloads,mp=/shared/downloads
 pct set $radarr_id -mp0 /mnt/sharedVMDrive/downloads,mp=/shared/downloads
-pct set $plesk_id -mp0 /mnt/sharedVMDrive/downloads,mp=/shared/downloads
+pct set $plex_id -mp0 /mnt/sharedVMDrive/downloads,mp=/shared/downloads 
 pct set $qbit_id -mp0 /mnt/sharedVMDrive/downloads,mp=/shared/downloads
 pct set $sonarr_id -mp1 /mnt/sharedVMDrive/tvshows,mp=/shared/tvshows
-pct set $radarr_id -mp1 /mnt/sharedVMDrive/movies,mp=/shared/movies
-pct set $plesk_id -mp1 /mnt/sharedVMDrive/tvshows,mp=/shared/tvshows
-pct set $plesk_id -mp2 /mnt/sharedVMDrive/movies,mp=/shared/movies
