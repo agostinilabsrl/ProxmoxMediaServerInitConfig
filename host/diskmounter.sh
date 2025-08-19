@@ -43,7 +43,7 @@ add_mount "$BASE/tvshows" "/shared/tvshows"
 add_mount "$BASE/movies"  "/shared/movies"
 
 echo ">> Riavvio CT $CTID..."
-pct restart "$CTID"
+pct reboot "$CTID"
 
 echo ">> Verifica dentro al CT:"
 echo "pct exec $CTID -- bash -lc 'ls -la /shared /shared/tvshows /shared/movies || true'"
